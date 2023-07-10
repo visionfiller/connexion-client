@@ -6,6 +6,7 @@ import { Register } from "./components/auth/Register"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { Home } from "./components/Home"
 import { ApplicationViews } from "./components/ApplicationViews"
+import { NavBar } from "./components/nav/NavBar"
 
 
 
@@ -49,6 +50,7 @@ export const Connexion= () => {
 
 	<Route path="*" element={
 	<Authorized token={token}>
+    <NavBar/>
     <ApplicationViews/>
 </Authorized>}/>
 </Routes>
