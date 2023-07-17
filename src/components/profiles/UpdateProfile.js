@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
-import { UploadWidget } from "../cloudinary/UploadWidget"
+// import { UploadWidget } from "../cloudinary/UploadWidget"
 import { Flex, FormControl, IconButton, Checkbox, Input, Textarea, FormLabel, Select, useDisclosure, Box, Badge, Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { getGenders, getOrientations } from "../managers/GenderManager"
+import { updateMyProfile } from "../managers/UserProvider"
 
 
-export const NewPropertyForm = ({ profile }) => {
+export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => {
     const navigate = useNavigate()
-    const [genders, setGenders] = useState([])
-    const [orientations, setOrientations] = useState([])
+  
     const [profile, setProfile] = useState({
         full_name: "",
         bio: "",
@@ -18,37 +18,37 @@ export const NewPropertyForm = ({ profile }) => {
 
     })
 
-
+   
     useEffect(() => {
-        if (profile) {
-            setProfile(profile)
+        if (myProfile) {
+            setProfile(myProfile)
            
         }
         
-    }, [profile])
+    }, [myProfile])
 
 
     const HandleControlledInput = (event) => {
         const copy = { ...profile }
-        if (event.target.name === "gender") {
-            copy[event.target.name] = areas.find((area) => area.id === parseInt(event.target.value))
-        }
-        else if (event.target.name === "orientation") {
-            copy[event.target.name] = propertyTypes.find((propertyType) => propertyType.id === parseInt(event.target.value))
-        }
+        // if (event.target.name === "gender") {
+        //     copy[event.target.name] = genders.find((gender) => gender.id === parseInt(event.target.value))
+        // }
+        // else if (event.target.name === "orientation") {
+        //     copy[event.target.name] = orientations.find((orientation) => orientation.id === parseInt(event.target.value))
+        // }
     
 
-        else {
+        {
             copy[event.target.name] = event.target.value
         }
-        setNewProperty(copy)
-    }
-    const HandleControlledInputChecked = (event) => {
-        const copy = { ...newProperty }
-
-        copy[event.target.name] = event.target.checked
         setProfile(copy)
     }
+    // const HandleControlledInputChecked = (event) => {
+    //     const copy = { ...newProperty }
+
+    //     copy[event.target.name] = event.target.checked
+    //     setProfile(copy)
+    // }
     const HandleSubmit = (event) => {
         event.preventDefault()
         let data = {
@@ -58,17 +58,7 @@ export const NewPropertyForm = ({ profile }) => {
         gender: parseInt(profile.gender),
         orientation: parseInt(profile.orientation)
         }
-        if (property) {
-            updateProfile(data).then(() => {
-                refreshProperty()
-            })
-        }
-        // else {
-
-        //     addNewProperty(data).then(() => {
-        //         refreshProperty()
-        //     })
-        // }
+        updateMyProfile(data).then(()=> getProfile())
     }
 
     // function handleOnUpload(error, result, widget) {
@@ -106,8 +96,8 @@ export const NewPropertyForm = ({ profile }) => {
                 <FormControl mt={4}>
                     <FormLabel>Name</FormLabel>
                     <Input
-                        value={newProperty.address}
-                        name="address"
+                        value={profile.full_name}
+                        name="full_name"
                         onChange={HandleControlledInput}
                         border="1px"
                         borderColor="gray.700"
@@ -115,19 +105,19 @@ export const NewPropertyForm = ({ profile }) => {
                     />
                 </FormControl>
                 <FormControl mt={4}>
-                    <FormLabel>City</FormLabel>
+                    <FormLabel>Gender</FormLabel>
                     <Flex>
                         <Select
-                           value={city}
-                            name="city"
-                            onChange={handleCityChange}
+                           value={profile?.gender}
+                            name="gender"
+                            onChange={HandleControlledInput}
                             border="1px"
                             borderColor="gray.700"
                         >
-                            <option>Select a City</option>
-                            {cities.map((city) => (
-                                <option key={city.id} value={city.id}>
-                                    {city.name}
+                            <option>Select a Gender</option>
+                            {genders.map((gender) => (
+                                <option key={gender.id} value={gender.id}>
+                                    {gender.label}
                                 </option>
                             ))}
 
@@ -137,113 +127,52 @@ export const NewPropertyForm = ({ profile }) => {
                     {/* <AreaForm isOpen={isOpen} onClose={onClose} getAreas={getAreas} /> */}
                 </FormControl>
                 <FormControl mt={4}>
-                    <FormLabel>Area</FormLabel>
+                    <FormLabel>Orientation</FormLabel>
                     <Flex>
                         <Select
-                            value={newProperty.area.id}
-                            name="area"
+                            value={profile?.orientation}
+                            name="orientation"
                             onChange={HandleControlledInput}
                             border="1px"
                             borderColor="gray.700"
                         >
-                            <option>Select an Area</option>
-                            {areas.map((area) => (
-                                <option key={area.id} value={area.id}>
-                                    {area.neighborhood}
+                            <option>Select an Orientation</option>
+                            {orientations.map((orientation) => (
+                                <option key={orientation.id} value={orientation.id}>
+                                    {orientation.label}
                                 </option>
                             ))}
 
                         </Select>
-                        <IconButton icon={<AddIcon />} bg="transparent" onClick={onOpen} _hover={{ backgroundColor: "transparent" }}></IconButton>
                     </Flex>
-                    <AreaForm cities={cities} isOpen={isOpen} onClose={onClose} getAreas={getAreas} />
                 </FormControl>
                
 
-                <FormControl mt={4}>
-                    <FormLabel>Property Type</FormLabel>
-                    <Select
-                        value={newProperty.property_type.id}
-                        name="property_type"
-                        onChange={HandleControlledInput}
-                        border="1px"
-                        borderColor="gray.700"
-                    >
-                        <option>Select a property type</option>
-                        {propertyTypes.map((propertyType) => (
-                            <option key={propertyType.id} value={propertyType.id}>
-                                {propertyType.name}
-                            </option>
-                        ))}
-                    </Select>
-                </FormControl>
+               
 
                 <FormControl mt={4}>
-                    <FormLabel>How many bedrooms?</FormLabel>
+                    <FormLabel>Bio</FormLabel>
                     <Input
-                        value={newProperty.bedrooms}
-                        name="bedrooms"
-                        onChange={HandleControlledInput}
-                        type="number"
-                    />
-                </FormControl>
-
-                <FormControl mt={4}>
-                    <FormLabel>How many bathrooms?</FormLabel>
-                    <Input
-                        value={newProperty.bathrooms}
-                        name="bathrooms"
-                        onChange={HandleControlledInput}
-                        type="number"
-                    />
-                </FormControl>
-
-                <FormControl mt={4}>
-                    <FormLabel>How large is your home?</FormLabel>
-                    <Input
-                        value={newProperty.square_footage}
-                        name="square_footage"
-                        onChange={HandleControlledInput}
-                        type="number"
-                    />
-                </FormControl>
-                <FormControl mt={4}>
-                    <FormLabel>Talk about what makes your home great!</FormLabel>
-                    <Textarea
-                        value={newProperty.description}
-                        name="description"
+                        value={profile.bio}
+                        name="bio"
                         onChange={HandleControlledInput}
                         type="text"
                     />
                 </FormControl>
-                <Flex>
-                    <FormControl mt={4}>
-                        <FormLabel>Pool?</FormLabel>
-                        <Checkbox
-                            isChecked={newProperty.pool}
-                            name="pool"
-                            onChange={HandleControlledInputChecked}
-                        />
-                    </FormControl>
 
-                    <FormControl mt={4} >
-                        <FormLabel>Yard?</FormLabel>
-                        <Checkbox
-                            isChecked={newProperty.yard}
-                            name="yard"
-                            onChange={HandleControlledInputChecked}
-                        />
-                    </FormControl>
-                </Flex>
-                <FormControl mt="4">
-
-
-                    {url === "" ? ""
-                        : <Image h="50%" w="full" src={url} />}
-
-                    <UploadWidget onUpload={handleOnUpload} />
-
+                <FormControl mt={4}>
+                    <FormLabel>Profile Picture</FormLabel>
+                    <Input
+                        value={profile.profile_picture}
+                        name="profile_picture"
+                        onChange={HandleControlledInput}
+                        type="text"
+                    />
                 </FormControl>
+
+               
+               
+               
                 <Box align="center">
                     <Button size="lg" align="center" mt={4} colorScheme="teal" type="submit">
                         Submit
