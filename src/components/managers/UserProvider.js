@@ -30,3 +30,15 @@ export const getMyProfile =() => {
     })
         .then(response => response.json())
 }
+export const updateMyProfile =(data) => {
+    let token = getToken()
+    return fetch(`http://localhost:8000/connexionusers/update_profile`, {
+        method: "PUT",
+        headers:{
+            "Authorization": `Token ${token}`,
+             "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+}

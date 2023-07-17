@@ -2,8 +2,12 @@ import { IconButton, Box, Badge, Card, CardHeader, CardBody, CardFooter, Image, 
 import { StarIcon, Search2Icon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 
-export const ProfileBox= ({profile}) => {
- 
+export const ProfileBox= ({profile, genders, orientations}) => {
+
+ const profileGender= (id)=> {
+genders.filter((gender) => gender.id === id)
+
+ }
 
     return <Box boxShadow="sm" bg="gray.200"height="300px" w="350px" borderWidth='1px' borderRadius='lg' overflow='hidden'>
      
@@ -23,7 +27,16 @@ export const ProfileBox= ({profile}) => {
           {profile.full_name}
         </Box>
       </Box>
-
+      <Box
+          color='gray.500'
+          fontWeight='semibold'
+          letterSpacing='wide'
+          fontSize='xs'
+          textTransform='uppercase'
+          ml='2'
+        >
+          {profileGender(parseInt(profile.gender))}
+        </Box>
       <Box
         mt='1'
         fontWeight='semibold'
