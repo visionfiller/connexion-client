@@ -4,7 +4,7 @@ import { Authorized } from "./components/auth/Authorized"
 import { Login } from "./components/auth/Login"
 import { Register } from "./components/auth/Register"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { Home } from "./components/Home"
+import { Home } from "./components/home/Home"
 import { ApplicationViews } from "./components/ApplicationViews"
 import { NavBar } from "./components/nav/NavBar"
 

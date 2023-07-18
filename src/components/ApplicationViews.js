@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { Home } from "./Home"
+import { Home } from "./home/Home"
 import { MyProfile } from "./myprofile/MyProfile"
 
 export const ApplicationViews = () => {

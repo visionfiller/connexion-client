@@ -2,20 +2,23 @@ import { IconButton, Box, Badge, Card, CardHeader, CardBody, CardFooter, Image, 
 import { StarIcon, Search2Icon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 
-export const ProfileBox= ({profile, genders, orientations}) => {
+export const ProfileBox = ({ profile, genders, orientations }) => {
+  const profileOrientation = (id) => {
+    let foundOrientation = orientations.find((orientation) => orientation.id === id)
+    if (foundOrientation) { return foundOrientation.label }
+  }
+  const profileGender = (id) => {
+    let foundGender = genders.find((gender) => gender.id === id)
+    if (foundGender) { return foundGender.label }
+  }
 
- const profileGender= (id)=> {
-genders.filter((gender) => gender.id === id)
+  return <Box boxShadow="sm" bg="gray.200" height="300px" w="350px" borderWidth='1px' borderRadius='lg' overflow='hidden'>
 
- }
+    <Image objectFit="cover" h="50%" w="full" src={profile.profile_picture} />
 
-    return <Box boxShadow="sm" bg="gray.200"height="300px" w="350px" borderWidth='1px' borderRadius='lg' overflow='hidden'>
-     
-<Image objectFit="cover"  h="50%" w="full" src={profile.profile_picture} />
-
-    <Box  p='6'>
+    <Box p='6'>
       <Box display='flex' alignItems='baseline'>
-        
+
         <Box
           color='gray.500'
           fontWeight='semibold'
@@ -28,15 +31,15 @@ genders.filter((gender) => gender.id === id)
         </Box>
       </Box>
       <Box
-          color='gray.500'
-          fontWeight='semibold'
-          letterSpacing='wide'
-          fontSize='xs'
-          textTransform='uppercase'
-          ml='2'
-        >
-          {profileGender(parseInt(profile.gender))}
-        </Box>
+        color='gray.500'
+        fontWeight='semibold'
+        letterSpacing='wide'
+        fontSize='xs'
+        textTransform='uppercase'
+        ml='2'
+      >
+        {profileOrientation(profile.orientation) } {profileGender(parseInt(profile.gender))}
+      </Box>
       <Box
         mt='1'
         fontWeight='semibold'
@@ -46,7 +49,7 @@ genders.filter((gender) => gender.id === id)
       >
         {profile.bio}
       </Box>
-     
+
     </Box>
 
   </Box>
