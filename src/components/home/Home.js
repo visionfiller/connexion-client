@@ -8,14 +8,24 @@ export const Home = () => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        getAllPosts().then((data) => setPosts(data))
+        getPosts()
     }, [])
-
+    const sortByMostRecent = (a, b) => {
+        const dateA = new Date(a.formatted_date);
+        const dateB = new Date(b.formatted_date);
+        return dateB - dateA; // Return the difference between dateB and dateA to sort in descending order
+      };
+    const getPosts = () => {
+        getAllPosts().then((data) => 
+        {
+        let sortedData = data.sort(sortByMostRecent)
+        setPosts(sortedData)})
+    }
 
 
 
     return <>
-    <Box><SubmitForm /></Box>
+    <Box><SubmitForm getPosts={getPosts}/></Box>
         {posts.map((post) => {
             return <Box w="50%"mx="auto"><PostList post={post}/></Box>
         })}

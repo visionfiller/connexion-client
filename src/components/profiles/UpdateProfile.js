@@ -4,11 +4,13 @@ import { Navigate, useNavigate } from "react-router-dom"
 import { Flex, FormControl, IconButton, Checkbox, Input, Textarea, FormLabel, Select, useDisclosure, Box, Badge, Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react'
 import { getGenders, getOrientations } from "../managers/GenderManager"
 import { updateMyProfile } from "../managers/UserProvider"
+import { UploadWidget } from "../cloudinary/UploadWidget"
 
 
-export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => {
+export const ProfileForm = ({ myProfile, getProfile, genders, orientations }) => {
     const navigate = useNavigate()
-  
+    const [url, setURL] = useState("")
+    const [error, updateError] = useState("");
     const [profile, setProfile] = useState({
         full_name: "",
         bio: "",
@@ -18,13 +20,13 @@ export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => 
 
     })
 
-   
+
     useEffect(() => {
         if (myProfile) {
             setProfile(myProfile)
-           
+
         }
-        
+
     }, [myProfile])
 
 
@@ -36,7 +38,7 @@ export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => 
         // else if (event.target.name === "orientation") {
         //     copy[event.target.name] = orientations.find((orientation) => orientation.id === parseInt(event.target.value))
         // }
-    
+
 
         {
             copy[event.target.name] = event.target.value
@@ -52,41 +54,41 @@ export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => 
     const HandleSubmit = (event) => {
         event.preventDefault()
         let data = {
-        full_name: profile.full_name,
-        bio: profile.bio,
-        profile_picture: profile.profile_picture,
-        gender: parseInt(profile.gender),
-        orientation: parseInt(profile.orientation)
+            full_name: profile.full_name,
+            bio: profile.bio,
+            profile_picture: profile.profile_picture,
+            gender: parseInt(profile.gender),
+            orientation: parseInt(profile.orientation)
         }
-        updateMyProfile(data).then(()=> getProfile())
+        updateMyProfile(data).then(() => getProfile())
     }
 
-    // function handleOnUpload(error, result, widget) {
-    //     if (error) {
-    //         updateError(error);
-    //         widget.close({
-    //             quiet: true
-    //         });
-    //         return;
-    //     }
-    //     setURL(result?.info?.secure_url)
+    function handleOnUpload(error, result, widget) {
+        if (error) {
+            updateError(error);
+            widget.close({
+                quiet: true
+            });
+            return;
+        }
+        setURL(result?.info?.secure_url)
 
-    // }
-    // const HandleControlledInputChangeCustomer = (url) => {
-    //     const copy = { ...newProperty }
-    //     copy.image = url
-    //     setNewProperty(copy)
-    // }
+    }
+    const HandleControlledInputChangeCustomer = (url) => {
+        const copy = { ...profile }
+        copy.profile_picture= url
+        setProfile(copy)
+    }
 
-    // useEffect(
-    //     () => {
-    //         if (url !== "") {
-    //             HandleControlledInputChangeCustomer(url)
+    useEffect(
+        () => {
+            if (url !== "") {
+                HandleControlledInputChangeCustomer(url)
 
-    //         }
+            }
 
 
-    //     }, [url])
+        }, [url])
     return <>
 
         <Box bg="white" mx="auto" w={{ base: "100%", md: "50%" }} p="8" rounded="lg" border="2px" borderColor="teal">
@@ -108,7 +110,7 @@ export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => 
                     <FormLabel>Gender</FormLabel>
                     <Flex>
                         <Select
-                           value={profile?.gender}
+                            value={profile?.gender}
                             name="gender"
                             onChange={HandleControlledInput}
                             border="1px"
@@ -146,9 +148,9 @@ export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => 
                         </Select>
                     </Flex>
                 </FormControl>
-               
 
-               
+
+
 
                 <FormControl mt={4}>
                     <FormLabel>Bio</FormLabel>
@@ -160,19 +162,17 @@ export const ProfileForm = ({ myProfile, getProfile, genders, orientations}) => 
                     />
                 </FormControl>
 
-                <FormControl mt={4}>
-                    <FormLabel>Profile Picture</FormLabel>
-                    <Input
-                        value={profile.profile_picture}
-                        name="profile_picture"
-                        onChange={HandleControlledInput}
-                        type="text"
-                    />
+                <FormControl mt="4">
+                    {url === "" ? ""
+                        : <Image h="50%" w="full" src={url} />}
+
+                    <UploadWidget onUpload={handleOnUpload} />
+
                 </FormControl>
 
-               
-               
-               
+
+
+
                 <Box align="center">
                     <Button size="lg" align="center" mt={4} colorScheme="teal" type="submit">
                         Submit
