@@ -18,10 +18,13 @@ export const PostList = ({post}) => {
 
                     <Stack>
                         <CardBody>
-                            <Heading size='md'>{post?.connexion_user?.full_name}</Heading>
+                            <Link to={`/profiles/${post.connexion_user.id}`}><Heading size='md'>{post?.connexion_user?.full_name}</Heading></Link>
 
                             <Text py='2'>
                                 {post.body}
+                            </Text>
+                            <Text py='2'>
+                                {post.formatted_date}
                             </Text>
                         </CardBody>
 
