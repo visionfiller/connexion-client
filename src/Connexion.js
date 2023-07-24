@@ -7,6 +7,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { Home } from "./components/home/Home"
 import { ApplicationViews } from "./components/ApplicationViews"
 import { NavBar } from "./components/nav/NavBar"
+import { ProfileProvider } from "./components/managers/ContextProvider"
 
 
 
@@ -42,7 +43,7 @@ export const Connexion= () => {
   
 	return <>
 	 <ChakraProvider theme={theme}>
-
+	  <ProfileProvider>
 	<Routes>
 	
     <Route path="/login" element={<Login setToken={setToken} />} />
@@ -54,7 +55,7 @@ export const Connexion= () => {
     <ApplicationViews/>
 </Authorized>}/>
 </Routes>
-
+</ProfileProvider>
 </ChakraProvider>
   </>
 }
