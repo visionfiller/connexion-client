@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { ProfileContext } from "../managers/ContextProvider"
 import { getGenders, getOrientations } from "../managers/GenderManager"
 import { getMyProfile } from "../managers/UserProvider"
 import { ProfileBox } from "../profiles/ProfileBox"
@@ -6,12 +7,11 @@ import { ProfileForm } from "../profiles/UpdateProfile"
 
 export const MyProfile = () => {
     const [profile, setProfile] = useState({})
-    const [genders, setGenders] = useState([])
-    const [orientations, setOrientations] = useState([])
+   
+    const {genders, orientations} = useContext(ProfileContext);
     useEffect(() => {
         getProfile()
-        getGenders().then((data) => setGenders(data))
-        getOrientations().then((data) => setOrientations(data))
+       
     }, [])
 
     const getProfile = () => {
