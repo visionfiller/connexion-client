@@ -10,7 +10,7 @@ export const ApplicationViews = () => {
      
         <Route path="/home" element={<Home/>} />
         <Route path = "/myprofile" element={<MyProfile />} />
-        <Route path = "/profiles/:connexion_user" element={<ProfileDetails/>} />
+        <Route path = "/profiles/:connexion_userId" element={<ProfileDetails/>} />
  
     </Routes>
   

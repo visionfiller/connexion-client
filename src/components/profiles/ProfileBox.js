@@ -27,7 +27,7 @@ export const ProfileBox = ({ profile, genders, orientations }) => {
           textTransform='uppercase'
           ml='2'
         >
-          {profile.full_name}
+          <Link to={`/profiles/${profile.user}`}>{profile.full_name}</Link> 
         </Box>
       </Box>
       <Box

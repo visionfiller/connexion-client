@@ -10,6 +10,16 @@ export const getAllPosts =() => {
     })
         .then(response => response.json())
 }
+export const getFriendsPosts =() => {
+    let token = getToken()
+    return fetch(`http://localhost:8000/posts/myfriendsposts`, {
+        headers:{
+            "Authorization": `Token ${token}`,
+             "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.json())
+}
 export const addNewPost= (newPost) => {
     let token = getToken()
     return fetch(`http://localhost:8000/posts`, {

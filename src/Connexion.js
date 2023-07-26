@@ -43,7 +43,7 @@ export const Connexion= () => {
   
 	return <>
 	 <ChakraProvider theme={theme}>
-	  <ProfileProvider>
+	 
 	<Routes>
 	
     <Route path="/login" element={<Login setToken={setToken} />} />
@@ -51,11 +51,13 @@ export const Connexion= () => {
 
 	<Route path="*" element={
 	<Authorized token={token}>
+			<ProfileProvider>
     <NavBar/>
     <ApplicationViews/>
+	</ProfileProvider>
 </Authorized>}/>
 </Routes>
-</ProfileProvider>
+
 </ChakraProvider>
   </>
 }
