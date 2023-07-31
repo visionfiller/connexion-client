@@ -32,6 +32,7 @@ export const PostList = ({post}) => {
                             <Button variant='solid' colorScheme='blue'>
                                 Like
                             </Button>
+                            <Button>Delete</Button>
                         </CardFooter>
                     </Stack>
                 </Card>
