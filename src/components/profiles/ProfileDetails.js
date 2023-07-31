@@ -4,6 +4,7 @@ import { getUserProfile } from "../managers/ProfileManager"
 import {Box, Image, Heading, Flex, Button} from '@chakra-ui/react'
 import { ProfileBox } from "./ProfileBox"
 import { ProfileContext } from "../managers/ContextProvider"
+import { sendFriendRequest } from "../managers/FriendRequestManager"
 
 export const ProfileDetails= ()=> {
     const { connexion_userId } = useParams()
@@ -27,7 +28,7 @@ const FriendsOrNo = (user)=> {
     }
        
     
-    return <Button>Send a Friend Request</Button>
+    return <Button onClick={()=> sendFriendRequest(parseInt(connexion_userId))}>Send a Friend Request</Button>
 }
 
 return<>

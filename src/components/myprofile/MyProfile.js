@@ -5,6 +5,7 @@ import { getMyProfile } from "../managers/UserProvider"
 import { ProfileBox } from "../profiles/ProfileBox"
 import { ProfileForm } from "../profiles/UpdateProfile"
 import {Box, Heading, Flex} from '@chakra-ui/react'
+import { FriendRequests } from "../profiles/FriendRequests"
 
 export const MyProfile = () => {
     const [profile, setProfile] = useState({})
@@ -23,6 +24,7 @@ export const MyProfile = () => {
 
 
     return <>
+        <FriendRequests getProfile={getMyProfile}/>
         <ProfileBox genders={genders} orientations={orientations} profile={profile} />
         <ProfileForm genders={genders} orientations={orientations} myProfile={profile} getProfile={getProfile} />
         <Box><Heading>My Friends</Heading></Box>
